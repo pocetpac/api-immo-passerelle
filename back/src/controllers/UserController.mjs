@@ -1,12 +1,19 @@
 import UserRepository from '../repository/UserRepository.mjs';
 import serviceApiResponse from '../service/dataApiResponse.js';
 
+
+
 class UserController {
     
     getAll(req, res) {
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        const offset = page * limit - limit;
         const User = new UserRepository();
-        User.getAll(offset, limit).then(users => {
-            res.status(200).json({message: "All users found", users});
+        User.countAll().then(count => {
+            User.getAll(offset, limit).then(users => {
+                res.status(200).json(serviceApiResponse(users, page, count, limit));
+            })
         })
     }
     
@@ -21,8 +28,8 @@ class UserController {
     createUser(req, res) {
         const User = new UserRepository();
         let entity = {
-            firstname: req.body.firstName,
-            lastname: req.body.lastName,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
             password: req.body.password,
         }

@@ -3,6 +3,7 @@ import apiUsersRoutes from './routes.users.mjs';
 import apiRealtiesRoutes from './routes.realties.mjs';
 import apiRealtiesTypesRoutes from './routes.realtiesTypes.mjs';
 const router = express.Router();
+
  
 // ... chargement de vos prochaines routes ici
 router.use('/user', apiUsersRoutes);

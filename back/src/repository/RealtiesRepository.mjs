@@ -2,13 +2,20 @@ import db from '../../database_SQL/config_db.mjs';
 
 class RealtyRepository {
     
-    async getAll(offset = 0, limit = 100) {
+    async getAll(offset = 0, limit = 10) {
         const result = await db.promise().execute(
             "SELECT * FROM realties LIMIT ?, ?",
             [offset, limit]
         );
         return result[0];
     } 
+
+    async countAll() {
+        let result = await db.promise().execute(
+            "SELECT COUNT(*) AS nb from realties"
+        )
+        return result[0][0].nb;
+    }
 
     async getById(id) {
         const result = await db.promise().execute(

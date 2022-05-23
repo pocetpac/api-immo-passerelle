@@ -4,9 +4,14 @@ import serviceApiResponse from "../service/dataApiResponse.js";
 class RealtyController {
     
     getAll(req, res) {
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        const offset = page * limit - limit;
         const Realty = new RealtyRepository();
-        Realty.getAll().then(realty => {
-            res.status(200).json(realty);
+        Realty.countAll().then(count => {
+            Realty.getAll(offset, limit).then(realties => {
+                res.status(200).json(serviceApiResponse(realties, page, count, limit));
+            })
         })
     }
     
@@ -18,7 +23,6 @@ class RealtyController {
                 res.status(302).json(realty);
             })
         }
-        
     }
     
     createRealty(req, res) {

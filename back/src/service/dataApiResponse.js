@@ -1,5 +1,6 @@
 module.exports = (records, page, count, limit) => {
     page = parseInt(page);
+    limit = parseInt(limit);
     let last = Math.ceil(count/limit);
     return {
         records,
